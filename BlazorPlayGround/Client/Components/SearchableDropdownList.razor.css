@@ -1,0 +1,27 @@
+﻿.clear-input-icon {
+    position: absolute;
+    left: 44px;
+    top: 50%;
+    font-size: 14px; /* Adjust the size */
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.divider {
+    position: absolute;
+    left: 36px;
+    top: 50%;
+    height: 24px;
+    width: 1px;
+    background-color: #ccc;
+    transform: translateY(-50%);
+}
+
+.dropdown-arrow {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    font-size: 36px; /* Adjust the size */
+    transform: translateY(-50%);
+    cursor: pointer;
+}

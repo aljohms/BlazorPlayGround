@@ -1,0 +1,96 @@
+﻿<div class="form-group" style="position:relative;">
+    <input type="text" class="form-control" @onclick="ToggleDropdown" @oninput="Filter" @bind-value=SearchText placeholder="Select..." />
+
+    @if (!string.IsNullOrWhiteSpace(SearchText))
+    {
+        <span class="clear-input-icon" @onclick="ClearInput">&#10006;</span>
+        <span class="divider"></span>
+    }
+
+    <span class="dropdown-arrow" @onclick="ToggleDropdown">&#9662;</span>
+
+    @if (InputClicked)
+    {
+        <div style="position:absolute; width:100%;" class="dropdown-menu show" @onclick:stopPropagation>
+            @foreach (var item in FilteredData)
+            {
+                <button class="dropdown-item" @onclick="() => SelectItem(item)">@item.Value</button>
+            }
+        </div>
+    }
+</div>
+
+<div @onclick="HideDropdownOnClickOutside" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: @(InputClicked ? "block" : "none")"></div>
+
+@code {
+    public string? SearchText { get; set; }
+    [Parameter]
+    public List<SearchableDropdownModel>? DropdownData { get; set; }
+    [Parameter]
+    public EventCallback<SearchableDropdownModel> OnChange { get; set; }
+    public List<SearchableDropdownModel> FilteredData { get; set; } = new();
+    private bool InputClicked { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (DropdownData == null)
+        {
+            DropdownData = new();
+        }
+        FilteredData = DropdownData;
+    }
+
+    void ToggleDropdown()
+    {
+        InputClicked = !InputClicked;
+
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            FilteredData = DropdownData;
+        }
+        else
+        {
+            FilteredData = DropdownData
+                .Where(x => x.Value.ToLower().Contains(SearchText.ToLower()))
+                .Take(5)
+                .ToList();
+        }
+
+        this.StateHasChanged();
+    }
+
+    void Filter(ChangeEventArgs e)
+    {
+        SearchText = e.Value?.ToString();
+        FilteredData = DropdownData
+            .Where(x => x.Value.ToLower().Contains(SearchText.ToLower()))
+            .Take(5)
+            .ToList();
+        InputClicked = true;
+        this.StateHasChanged();
+    }
+
+    void SelectItem(SearchableDropdownModel item)
+    {
+        SearchText = item.Value;
+        OnChange.InvokeAsync(item);
+        InputClicked = false;
+        this.StateHasChanged();
+    }
+
+    void HideDropdownOnClickOutside()
+    {
+        InputClicked = false;
+        this.StateHasChanged();
+    }
+
+    void ClearInput()
+    {
+        SearchText = string.Empty;
+        FilteredData = DropdownData;
+        InputClicked = true;
+        this.StateHasChanged();
+    }
+}
+

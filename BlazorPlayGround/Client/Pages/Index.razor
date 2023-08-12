@@ -1,0 +1,26 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+<SearchableDropdownList OnChange="(e)=>Id=e.Value.ToString()" DropdownData="DropdownData" />
+Welcome to your new app.
+<h1>@Id</h1>
+<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    public string Id { get; set; }
+    List<SearchableDropdownModel> DropdownData { get; set; } = new()
+    {
+        new SearchableDropdownModel { Id = "1", Value = "Value 1" },
+new SearchableDropdownModel { Id = "2", Value = "Value 2" },
+new SearchableDropdownModel { Id = "3", Value = "Value 3" },
+new SearchableDropdownModel { Id = "4", Value = "Value 4" },
+new SearchableDropdownModel { Id = "5", Value = "Value 5" },
+new SearchableDropdownModel { Id = "6", Value = "Value 6" },
+new SearchableDropdownModel { Id = "7", Value = "Value 7" },
+new SearchableDropdownModel { Id = "8", Value = "Value 8" },
+new SearchableDropdownModel { Id = "9", Value = "Value 9" },
+new SearchableDropdownModel { Id = "10", Value = "Value 10" },
+new SearchableDropdownModel { Id = "11", Value = "Value 11" },
+new SearchableDropdownModel { Id = "12", Value = "Value 12" },
+new SearchableDropdownModel { Id = "13", Value = "Value 13" },
+    };
+}
