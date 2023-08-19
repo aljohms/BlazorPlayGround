@@ -1,26 +1,69 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
-<SearchableDropdownList OnChange="(e)=>Id=e.Value.ToString()" DropdownData="DropdownData" />
-Welcome to your new app.
-<h1>@Id</h1>
-<SurveyPrompt Title="How is Blazor working for you?" />
+<PageTitle>Components</PageTitle>
+
+<div class="row">
+    <div class="col-md-6">
+        <label>Dropdown:</label>
+        <DropdownList OnChange="(e)=>Dropdown=e" Data="DropdownData" />
+    </div>
+    <div class="col-md-2">
+        <label>Id</label>
+        <p>@Dropdown.Id</p>
+    </div>
+    <div class="col-md-2">
+        <label>
+            Value
+        </label>
+        <p>@Dropdown.Value</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <label>Searchable Dropdown:</label>
+        <DropdownList OnChange="(e)=>SearchableDropdown=e" Data="DropdownData" Searchable=true />
+    </div>
+    <div class="col-md-2">
+        <label>Id</label>
+        <p>@SearchableDropdown.Id</p>
+    </div>
+    <div class="col-md-2">
+        <label>
+            Value
+        </label>
+        <p>@SearchableDropdown.Value</p>
+    </div>
+</div>
+
+<div class="row">
+    <BasicGrid Data="DropdownData"></BasicGrid>
+</div>
+
 @code {
-    public string Id { get; set; }
-    List<SearchableDropdownModel> DropdownData { get; set; } = new()
+    public DropdownModel Dropdown { get; set; } = new();
+    public DropdownModel SearchableDropdown { get; set; } = new();
+    public List<GridColumn<DropdownModel>> DisplayColumns { get; set; } = new List<GridColumn<DropdownModel>>()
     {
-        new SearchableDropdownModel { Id = "1", Value = "Value 1" },
-new SearchableDropdownModel { Id = "2", Value = "Value 2" },
-new SearchableDropdownModel { Id = "3", Value = "Value 3" },
-new SearchableDropdownModel { Id = "4", Value = "Value 4" },
-new SearchableDropdownModel { Id = "5", Value = "Value 5" },
-new SearchableDropdownModel { Id = "6", Value = "Value 6" },
-new SearchableDropdownModel { Id = "7", Value = "Value 7" },
-new SearchableDropdownModel { Id = "8", Value = "Value 8" },
-new SearchableDropdownModel { Id = "9", Value = "Value 9" },
-new SearchableDropdownModel { Id = "10", Value = "Value 10" },
-new SearchableDropdownModel { Id = "11", Value = "Value 11" },
-new SearchableDropdownModel { Id = "12", Value = "Value 12" },
-new SearchableDropdownModel { Id = "13", Value = "Value 13" },
+        new GridColumn<DropdownModel> { Title = "Id", Property = typeof(DropdownModel).GetProperty(nameof(DropdownModel.Id)) },
+        new GridColumn<DropdownModel> { Title = "Value", Property = typeof(DropdownModel).GetProperty(nameof(DropdownModel.Value)) },
     };
+
+    //simulate a database/api call
+    List<DropdownModel> DropdownData { get; set; } =
+    new()
+        {
+            new DropdownModel { Id = "1", Value = "Value 1" },
+            new DropdownModel { Id = "2", Value = "Value 2" },
+            new DropdownModel { Id = "3", Value = "Value 3" },
+            new DropdownModel { Id = "4", Value = "Value 4" },
+            new DropdownModel { Id = "5", Value = "Value 5" },
+            new DropdownModel { Id = "6", Value = "Value 6" },
+            new DropdownModel { Id = "7", Value = "Value 7" },
+            new DropdownModel { Id = "8", Value = "Value 8" },
+            new DropdownModel { Id = "9", Value = "Value 9" },
+            new DropdownModel { Id = "10", Value = "Value 10" },
+            new DropdownModel { Id = "11", Value = "Value 11" },
+            new DropdownModel { Id = "12", Value = "Value 12" },
+            new DropdownModel { Id = "13", Value = "Value 13" },
+        };
 }
