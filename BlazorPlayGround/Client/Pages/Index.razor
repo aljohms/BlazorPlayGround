@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<PageTitle>Components</PageTitle>
+<PageTitle>Dropdowns</PageTitle>
 
 <div class="row">
     <div class="col-md-6">
@@ -35,18 +35,12 @@
     </div>
 </div>
 
-<div class="row">
-    <BasicGrid Data="DropdownData"></BasicGrid>
-</div>
+
 
 @code {
     public DropdownModel Dropdown { get; set; } = new();
     public DropdownModel SearchableDropdown { get; set; } = new();
-    public List<GridColumn<DropdownModel>> DisplayColumns { get; set; } = new List<GridColumn<DropdownModel>>()
-    {
-        new GridColumn<DropdownModel> { Title = "Id", Property = typeof(DropdownModel).GetProperty(nameof(DropdownModel.Id)) },
-        new GridColumn<DropdownModel> { Title = "Value", Property = typeof(DropdownModel).GetProperty(nameof(DropdownModel.Value)) },
-    };
+
 
     //simulate a database/api call
     List<DropdownModel> DropdownData { get; set; } =

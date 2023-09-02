@@ -2,13 +2,18 @@
 
 @if (Data != null && DisplayColumns.Count > 0)
 {
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 @foreach (var column in DisplayColumns)
                 {
                     <th>@column.Title</th>
                 }
+                @if(HasEvent)
+                {
+                    <th>@EventColumnName</th>
+                }
+
             </tr>
         </thead>
         <tbody>
@@ -20,10 +25,40 @@
                         var propValue = column.Property.GetValue(item);
                         <td>@propValue</td>
                     }
+                    @if (HasEvent)
+                    {
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => OnClickHandler(item)">@EventBtnName</button>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
+}
+else if (Data !=null)
+{
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    @foreach (var prop in typeof(T).GetProperties())
+                    {
+                        <th>@prop.Name</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Data)
+                {
+                    <tr>
+                        @foreach (var prop in typeof(T).GetProperties())
+                        {
+                            <td>@prop.GetValue(item)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
 }
 else
 {
@@ -32,10 +67,22 @@ else
 
 @code {
     [Parameter]
+    public bool HasEvent { get; set; }
+    [Parameter]
+    public string EventColumnName { get; set; } = string.Empty;
+    [Parameter]
+    public string EventBtnName { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback<T> OnClick { get; set; }
+    [Parameter]
     public IEnumerable<T>? Data { get; set; }
 
     [Parameter]
     public List<GridColumn<T>> DisplayColumns { get; set; } = new List<GridColumn<T>>();
+    void OnClickHandler(T item)
+    {
+        OnClick.InvokeAsync(item);
+    }
 
 }
 
